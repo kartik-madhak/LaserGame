@@ -1,2 +1,2 @@
 # LaserGame
-A Game made with Processing.
+A Game made with Processing. (In development)
