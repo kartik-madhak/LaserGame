@@ -15,12 +15,13 @@ public class Laser {
     public void update(ArrayList<? extends IObstacle> obstacles) {
         this.vertices = new ArrayList<PVector>();
         this.vertices.add(this.origin);
-        
-        float currentAngleWithX  = atan2(mouseY - this.origin.y, mouseX - this.origin.x);
+        // atan2(mouseY - this.origin.y, mouseX - this.origin.x);
+        float currentAngleWithX  = this.angleWithX;
         PVector currentVertex = this.origin;
         
-        while(currentVertex.x >= 0 && currentVertex.x <= width && currentVertex.y >= 0 && currentVertex.y <= height) {
-            
+        int reflectedTimes = 0; 
+        while(currentVertex.x >= 0 && currentVertex.x <= width && currentVertex.y >= 0 && currentVertex.y <= height && reflectedTimes < 100) {
+            ++reflectedTimes;
             float minDist = Float.MAX_VALUE;
             PVector nearestVertex = null;
             float angle = 0;

@@ -1,74 +1,82 @@
-Application app;
-LevelEditor le;
-int choice = 0;
+// Application app;
+// LevelEditor le;
+int choice = -1;
+BaseApplication[] screens;
+
 
 void settings() {
     fullScreen();
 }
 
 void setup() {
-    app = new Application();
-    le = new LevelEditor();
+    
+    screens = new BaseApplication[]{
+            new MainApplication(),
+            new LevelEditorApplication(),
+        };
+    // app = new Application();
+    // le = new LevelEditor();
 }
 
 void mousePressed() {
-    switch(choice)
+    if(choice < screens.length && choice >= 0)
     {
-        case 2:
-           le.mousePressed();
-        break;
+        screens[choice].mousePressed();
+    } else {
+
     }
 }
 
 void mouseReleased() {
-    switch(choice)
+    if(choice < screens.length && choice >= 0)
     {
-        case 2:
-           le.mouseReleased();    
-        break;
+        screens[choice].mouseReleased();
+    } else {
+        
+    }
+}
+
+void mouseDragged() {
+    if(choice < screens.length && choice >= 0)
+    {
+        screens[choice].mouseDragged();
+    } else {
+        
     }
 }
 
 void keyPressed()
 {
-    switch(choice)
+    if(key == 'e')
+        choice = -1;
+    if(choice < screens.length && choice >= 0)
     {
-        case 0:
-            switch(key) {
-            case '1' :
-               if (choice == 0)
-                choice = 1;
-            break;	
-            case '2' :
-               if (choice == 0)
-                choice = 2;
-            break;	
-            }       
-        break;
-        case 2:
-            le.keyPressed();
-        break;
+        screens[choice].keyPressed();
+    } else {
+        try{
+            choice = Integer.parseInt(key + "") - 1;
+            if(choice < screens.length && choice >= 0)            
+                screens[choice].reset();
+        }
+        catch (Exception e) {
+            choice = -1;
+        }
     }
+  
 }
 
 void draw() {
-    switch(choice) {
-        case 0:
-          String str = "Press 1 to play, 2 to edit level...";
-          textSize(20);
+    if(choice < screens.length && choice >= 0)
+    {
+        screens[choice].run();
+    } else {
+        String str = "Press 1 to play, 2 to edit level...";
+        textSize(20);
         
-          float tW = textWidth(str);
-          float tH = textAscent();
-          text(str, width / 2 - tW / 2, height / 2 - tH / 2);
-        break;	
-        case 1:
-          app.run();
-        break;	
-        case 2:
-           le.run();
-        break;
-        default :
-           background(10);
-        break;		
+        float tW = textWidth(str);
+        float tH = textAscent();
+
+        background(30);
+        text(str, width / 2 - tW / 2, height / 2 - tH / 2);
     }
 }
