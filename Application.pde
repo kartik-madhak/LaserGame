@@ -4,10 +4,19 @@ public class Application{
     Laser laserObject = new Laser(new PVector(300, 300), radians(0));
 
     public Application () {
-        walls.add(new Wall(new PVector(600, 300), new PVector(900, 1000)));
-        walls.add(new Wall(new PVector(900, 0), new PVector(1200, 1000)));
-        walls.add(new Wall(new PVector(900, 0), new PVector(600, 298)));
-        walls.add(new Wall(new PVector(1200, 700), new PVector(600, 700)));    
+        String[] pairs = loadStrings("saves/mysave.lsg");
+        int len = pairs.length;
+        ArrayList<PVector> points = new ArrayList<PVector>();
+
+        for (int i = 0; i < len; ++i) {
+            float[] pair = float(trim(splitTokens(pairs[i], ",")));
+            points.add(new PVector(pair[0], pair[1]));
+        }
+        for (int i = 0; i < points.size() - 1; i += 2) {
+            PVector a = points.get(i);
+            PVector b = points.get(i + 1);
+            walls.add(new Wall(a, b));
+        }
     }
 
     public void run()

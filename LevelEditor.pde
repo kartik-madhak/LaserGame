@@ -4,15 +4,37 @@ public class LevelEditor {
     private PVector mouseP = null;
 
     public LevelEditor() {
-        
+        String[] pairs = loadStrings("saves/mysave.lsg");
+        int len = pairs.length;
+
+        for (int i = 0; i < len; ++i) {
+            float[] pair = float(trim(splitTokens(pairs[i], ",")));
+            this.points.add(new PVector(pair[0], pair[1]));
+        }
     }
 
     public void keyPressed()
     {
-        if(key == 'c')
-        {
-            this.points = new ArrayList();
+        switch (key) {
+            case 'c' :
+                this.points = new ArrayList();
+            break;	
+            case 's' :
+                this.save();                
+            break;	
         }
+    }
+
+    public void save()
+    {
+        // String name = year() + "_" + month() + "_" + day() + "." + hour() + "_" + minute() + "_" + second();
+        String name = "mysave.lsg"; 
+        PrintWriter output = createWriter("saves/" + name);
+        for (PVector v : this.points) {
+            output.println(v.x + "," + v.y);
+        }
+        output.flush();
+        output.close();
     }
 
     public void mousePressed()
